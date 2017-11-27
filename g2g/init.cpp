@@ -23,7 +23,7 @@ Partition partition;
 
 /* global variables */
 namespace G2G {
-	FortranVars fortran_vars;
+  FortranVars fortran_vars;
   int cpu_threads=0;
   int gpu_threads=0;
 }
@@ -66,7 +66,8 @@ extern "C" void g2g_parameter_init_(const unsigned int& norm, const unsigned int
                                     const unsigned int& M, unsigned int* ncont, const unsigned int* nshell, double* c, double* a,
                                     double* RMM, const unsigned int& M18, const unsigned int& M5, const unsigned int& M3, double* rhoalpha, double* rhobeta,
                                     const unsigned int& nco, bool& OPEN, const unsigned int& nunp, const unsigned int& nopt, const unsigned int& Iexch,
-                                    double* e, double* e2, double* e3, double* wang, double* wang2, double* wang3)
+                                    double* e, double* e2, double* e3, double* wang, double* wang2, double* wang3,
+                                    bool& use_libxc, const unsigned int& ex_functional_id, const unsigned int& ec_functional_id)
 {
   printf("<======= GPU Code Initialization ========>\n");
   fortran_vars.atoms = natom;
@@ -165,6 +166,11 @@ extern "C" void g2g_parameter_init_(const unsigned int& norm, const unsigned int
 
   fortran_vars.atom_atom_dists = HostMatrix<double>(fortran_vars.atoms, fortran_vars.atoms);
   fortran_vars.nearest_neighbor_dists = HostMatrix<double>(fortran_vars.atoms);
+
+  // Variables para configurar libxc
+  fortran_vars.use_libxc = use_libxc;
+  fortran_vars.ex_functional_id = ex_functional_id;
+  fortran_vars.ec_functional_id = ec_functional_id;
 
 #if GPU_KERNELS
   G2G::gpu_set_variables();
