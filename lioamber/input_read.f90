@@ -26,7 +26,8 @@ subroutine read_options(inputFile, charge)
                            sphere_radius, dipole, lowdin, mulliken,            &
                            print_coeffs, number_restr, Dbug, steep, Force_cut, &
                            Energy_cut, minimzation_steep, n_min_steeps,        &
-                           lineal_search, n_points, timers
+                           lineal_search, n_points, timers,                    &
+                           use_libxc, ex_functional_id, ec_functional_id
 
 
     use ECP_mod   , only : ecpmode, ecptypes, tipeECP, ZlistECP, verbose_ECP,  &
@@ -79,7 +80,11 @@ subroutine read_options(inputFile, charge)
                    natom, nsol, charge,                                        &
                    ! Variables for Transport
                    transport_calc, generate_rho0, gate_field,                  &
-                   save_charge_freq, driving_rate, Pop_Drive
+                   save_charge_freq, driving_rate, Pop_Drive,                  &
+                   ! Libxc variables
+                   use_libxc, ex_functional_id, ec_functional_id
+
+    write(*,*) 'using the modified parser for libxc'
 
     inquire(file = inputFile, exist = fileExists)
     if(fileExists) then
@@ -90,7 +95,6 @@ subroutine read_options(inputFile, charge)
     else
         write(*,*) 'File ', adjustl(inputFile), ' not found. Using defaults.'
     endif
-
     return
 end subroutine read_options
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!
