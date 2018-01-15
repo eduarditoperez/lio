@@ -7,7 +7,7 @@ if [ -n "$1" ]
   then
     SALIDA=$1
 fi
-SALIDALIO=salida.lio
+SALIDALIO=salida.libxc
 if [ -n "$1" ]
     then
     SALIDALIO=$1
