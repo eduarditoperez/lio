@@ -2,6 +2,7 @@
 LIBS  =
 LIBS += -L../g2g -lg2g
 LIBS += -L../lioamber -llio-g2g
+LIBS += -L$(CUDA_HOME)/lib64 -lcudart -lcuda
 FLAGS = -fopenmp 
 
 
