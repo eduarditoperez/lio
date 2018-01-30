@@ -62,9 +62,11 @@ namespace G2G {
 
   template<> class vec_type<float, 4> {
     private:
-      float x, y, z, _w;
+      //float x, y, z, _w;
 
     public:
+      float x, y, z, _w;
+
       vec_type(void) {}
       vec_type(float x_in, float y_in, float z_in, float w_in) :
                x(x_in), y(y_in), z(z_in), _w(w_in) { }
@@ -72,6 +74,10 @@ namespace G2G {
       friend std::ostream& operator<<(std::ostream& o, const vec_type & v) {
           o << v.x << " " << v.y << " " << v.z << " " << v._w;
           return o;
+      }
+
+      void operator+=(const vec_type & lo){
+      	x += lo.x, y += lo.y, z += lo.z, _w += lo._w;
       }
 
   };
