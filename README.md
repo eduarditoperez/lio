@@ -14,6 +14,7 @@ REQUIREMENTS
 * NVIDIA CUDA (for compiling GPU version).
 * GNU Make.
 * Python 2.7 (for test scripts)
+* Libxc for lio (optional).
 
 COMPILATION
 ------------
@@ -40,6 +41,8 @@ When using Intel's ICC/MKL or NVIDIA's CUDA libraries, add them to LD\_LIBRARY\_
 * *cpu_recompute*: recomputes=0 mantains in memory the value of the functions for each point (more memory is used but execution time goes down by around 10%). Only used for the CPU kernels.
 
 * *full_double*: generate the application using full double precision instead of mixed precision (which is the default).
+
+* _libxc_: compile the application to use libxc library. Requires libxc for lio installed.
 
 INSTALLATION
 ------------
@@ -69,6 +72,33 @@ NOTE: GROMACS is not yet officially supported on the other side, but we have our
 cmake -DGMX_GPU=0 -DGMX_THREAD_MPI=0 -DGMX_QMMM_PROGRAM="lio" -DLIO_LINK_FLAGS="-L/usr/lib -L/usr/lib64 -L/PATHTOLIOLIBRARIES -lg2g -llio-g2g"
 ```
   3. Done!
+
+INSTALLATION WITH LIBXC
+-----------------------
+
+  1. Download the libxc library for lio from gitlab (account needed) ([here](https://gitlab.com/eduarditoperez/libxc.git)).
+  2. Compile and Install the library (follow the Readme.me instructions).
+  3. In order for lio to compile with libxc, you'll need to create two variables in LD_LIBRARY_PATH
+```
+LIBXC_LIBXS=points to the path where the libxc libaries where installed in the file system.
+LIBXC_INCLUDES=points to the path where the libxc include files where installed in the file system.
+```
+  4. Now compile lio with the following command:
+```
+make cuda=1 libxc=1
+```
+  5. To run the simulations using the functionals from libxc you'll have to add the following variables to the *****.in files:
+```
+...
+use_libxc=t
+ex_functional_id=XXX
+ec_functional_id=XXX
+...
+```
+where ex_functional_id is the id for the energy-exchange functional from libxc and ec_funcional_id is the id
+for the energy-correlation functional from libxc. You can see the list of available functionals ([here](https://gitlab.com/libxc/libxc/wikis/Functional-list-4.0.4))
+or in see the funcs_key.c file in the src folder of libxc. Bare in mind that only the GGA functional's family are supported in
+this version of libxc for lio.
 
 TESTS
 -----
