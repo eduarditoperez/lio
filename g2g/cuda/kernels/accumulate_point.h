@@ -69,6 +69,7 @@ __global__ void gpu_accumulate_point(scalar_type* const energy, scalar_type* con
   _dxyz = _dd1 = _dd2 = G2G::vec_type<scalar_type,WIDTH>(0.0f,0.0f,0.0f,0.0f);
 
   bool valid_thread = (point < points);
+
   if (valid_thread)
     point_weight = point_weights[point];
 

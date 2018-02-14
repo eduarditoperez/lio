@@ -77,7 +77,7 @@ namespace G2G {
       }
 
       void operator+=(const vec_type & lo){
-      	x += lo.x, y += lo.y, z += lo.z; //, _w += lo._w;
+      	x += lo.x, y += lo.y, z += lo.z,  _w += lo._w;
       }
 
   };
