@@ -186,6 +186,7 @@ class PointGroupGPU: public PointGroup<scalar_type> {
     G2G::CudaMatrix<vec_type4> gradient_values;
     G2G::CudaMatrix<vec_type4> hessian_values_transposed;
     int current_device;
+
 };
 
 
@@ -220,6 +221,7 @@ class Partition {
     std::vector< std::vector< int > > work;
     std::vector< double > next;
     std::vector< double > timeforgroup;
+
 };
 
 extern int MINCOST, THRESHOLD, SPLITPOINTS;

@@ -266,7 +266,8 @@ size_t PointGroup<scalar_type>::size_in_gpu() const
 }
 
 template<class scalar_type>
-PointGroup<scalar_type>::~PointGroup<scalar_type>() { }
+PointGroup<scalar_type>::~PointGroup<scalar_type>() {
+}
 
 template<class scalar_type>
 PointGroupCPU<scalar_type>::~PointGroupCPU<scalar_type>() {
