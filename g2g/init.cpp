@@ -10,6 +10,7 @@
 #include "timer.h"
 #include "partition.h"
 #include "matrix.h"
+
 //#include "qmmm_forces.h"
 using std::cout;
 using std::endl;
@@ -45,6 +46,7 @@ extern "C" void g2g_init_(void)
   G2G::gpu_threads = devcount;
   cout << "Kernels: gpu" << endl;
   #endif
+
   #if CPU_KERNELS
   G2G::cpu_threads = omp_get_max_threads() - G2G::gpu_threads;
   cout << "Kernels: cpu" << endl;
