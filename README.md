@@ -13,6 +13,8 @@ REQUIREMENTS
 * GNU or INTEL C++ and Fortran Compiler.
 * NVIDIA CUDA (for the GPU kernels).
 * GNU Make.
+* Python 2.7 (for test scripts)
+* Libxc for Lio (optional).
 
 COMPILATION
 ------------
@@ -35,6 +37,8 @@ When using Intel's ICC/MKL or NVIDIA's CUDA libraries, add them to LD\_LIBRARY\_
 * _analytics_: Enables diferent levels of debug information and profiling (default = 0, max = 3).
 
 * _precision_: When precision = 1, compile everything in double precision (default = 0, hybrid precision).
+
+* _libxc_: compile the application to use libxc library. Requires libxc for lio installed.
 
 INSTALLATION
 ------------
@@ -64,6 +68,39 @@ NOTE: GROMACS is not yet officially supported on the other side, but we have our
 cmake -DGMX_GPU=0 -DGMX_THREAD_MPI=0 -DGMX_QMMM_PROGRAM="lio" -DLIO_LINK_FLAGS="-L/usr/lib -L/usr/lib64 -L/PATHTOLIOLIBRARIES -lg2g -llio-g2g"
 ```
   3. Done!
+
+INSTALLATION WITH LIBXC
+-----------------------
+
+  1. Download the libxc library for lio from gitlab (account needed) ([here](https://gitlab.com/eduarditoperez/libxc.git)).
+  2. Compile and Install the library (follow the Readme.me instructions).
+  3. In order for lio to compile with libxc, you'll need to create two variables in LD_LIBRARY_PATH
+```
+LIBXC_LIBXS=points to the path where the libxc libaries where installed in the file system.
+LIBXC_INCLUDES=points to the path where the libxc include files where installed in the file system.
+```
+  4. Libxc has 3 compilation options for lio, these are
+```
+libxc=0 - No libxc (for backwards compatibility with lio)
+libxc=1 - Use libxc in CPU mode
+libxc=2 - Use libxc in GPU mode
+```
+  5.If you want to compile lio with libxc in GPU mode, type the following command
+```
+make cuda=1 libxc=2
+```
+  6. To run the simulations using the functionals from libxc you'll have to add the following variables in the *****.in files:
+```
+...
+use_libxc=t
+ex_functional_id=XXX
+ec_functional_id=XXX
+...
+```
+where ex_functional_id is the id for the energy-exchange functional from libxc and ec_funcional_id is the id
+for the energy-correlation functional from libxc. You can see the list of available functionals ([here](https://gitlab.com/libxc/libxc/wikis/Functional-list-4.0.4))
+or in see the funcs_key.c file in the src folder of libxc. Bare in mind that only the GGA functional's family are supported in
+this version of libxc for lio.
 
 TESTS
 -----

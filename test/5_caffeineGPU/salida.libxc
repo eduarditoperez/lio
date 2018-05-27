@@ -1,0 +1,19 @@
+WELCOME TO LIO
+sáb may 26 21:44:20 -03 2018
+G2G initialisation.
+  GPU Device used: Tesla C2070
+  Using 3 CPU Threads and 1 GPU Threads.
+  QM atoms: 24 - MM atoms: 0
+  Total number of basis: 230 (s: 62 p: 28 d: 14)
+  Closed shell calculation - Occupied MO: 51
+AINT initialisation.
+  Density basis - s: 138 p: 42 d: 42 - Total (w/contractions): 516
+  Using device 0 for analytic integral calculations.
+Cannot find lionml namelist. Using lionml defaults.
+iostat =   -1
+
+LIO initialisation.
+  Basis set corresponding to Z =  26 was not used.
+  Basis set corresponding to Z =  16 was not used.
+
+Starting SCF cycles.

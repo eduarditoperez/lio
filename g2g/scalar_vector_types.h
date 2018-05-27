@@ -8,7 +8,6 @@ template <class T, unsigned int n>
 class vec_type {};
 
 #if !GPU_KERNELS
-
 template <>
 class vec_type<float, 2> : public float2 {
  public:
@@ -62,20 +61,26 @@ class vec_type<float, 3> {
   }
 };
 
-template <>
-class vec_type<float, 4> {
- private:
-  float x, y, z, _w;
+template<> class vec_type<float, 4> {
+    private:
+      //float x, y, z, _w; // Cambio porque libxc necesita acceder a las componentes del vector.
 
- public:
-  vec_type(void) {}
-  vec_type(float x_in, float y_in, float z_in, float w_in)
-      : x(x_in), y(y_in), z(z_in), _w(w_in) {}
+    public:
+      float x, y, z, _w; // Esto antes de libxc estaba en la parte privada.
 
-  friend std::ostream& operator<<(std::ostream& o, const vec_type& v) {
-    o << v.x << " " << v.y << " " << v.z << " " << v._w;
-    return o;
-  }
+      vec_type(void) {}
+      vec_type(float x_in, float y_in, float z_in, float w_in) :
+               x(x_in), y(y_in), z(z_in), _w(w_in) { }
+
+      friend std::ostream& operator<<(std::ostream& o, const vec_type & v) {
+          o << v.x << " " << v.y << " " << v.z << " " << v._w;
+          return o;
+      }
+
+      void operator+=(const vec_type & lo){
+      	x += lo.x, y += lo.y, z += lo.z,  _w += lo._w;
+      }
+
 };
 #else
 

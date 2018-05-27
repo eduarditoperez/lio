@@ -9,6 +9,8 @@
 LIBS  =
 LIBS += -Wl,-rpath='$$ORIGIN/../g2g' -L../g2g -lg2g
 LIBS += -Wl,-rpath='$$ORIGIN/../lioamber' -L../lioamber -llio-g2g
+LIBS += -L$(CUDA_HOME)/lib64 -lcudart -lcuda
+
 FLAGS = -fopenmp 
 
 

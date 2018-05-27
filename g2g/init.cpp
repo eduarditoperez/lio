@@ -10,6 +10,7 @@
 #include "timer.h"
 #include "partition.h"
 #include "matrix.h"
+
 //#include "qmmm_forces.h"
 using std::cout;
 using std::endl;
@@ -44,9 +45,11 @@ extern "C" void g2g_init_(void) {
   }
   G2G::gpu_threads = devcount;
 #endif
+
 #if CPU_KERNELS
   G2G::cpu_threads = omp_get_max_threads() - G2G::gpu_threads;
 #endif
+
   if (gpu_threads == 0 && cpu_threads == 0)
     throw runtime_error(
         "  ERROR: Either a gpu or a cpu thread is needed to run G2G");
@@ -62,17 +65,19 @@ void gpu_set_atom_positions(const HostMatrix<T>& m);
 }
 //==========================================================================================
 extern "C" void g2g_parameter_init_(
-    const unsigned int& norm, const unsigned int& natom,
-    const unsigned int& max_atoms,
-    const unsigned int& ngaussians,  // const unsigned int& ngaussiansd,
-    double* r, double* Rm, const unsigned int* Iz, const unsigned int* Nr,
-    const unsigned int* Nr2, unsigned int* Nuc, const unsigned int& M,
+    const unsigned int& norm, const unsigned int& natom, 
+    const unsigned int& max_atoms, 
+    const unsigned int& ngaussians,// const unsigned int& ngaussiansd,
+    double* r, double* Rm, const unsigned int* Iz, const unsigned int* Nr, 
+    const unsigned int* Nr2, unsigned int* Nuc, const unsigned int& M, 
     unsigned int* ncont, const unsigned int* nshell, double* c, double* a,
-    double* RMM, const unsigned int& M5,
+    double* RMM, const unsigned int& M5, 
     const unsigned int& M3, double* rhoalpha, double* rhobeta,
-    const unsigned int& nco, bool& OPEN, const unsigned int& nunp,
-    const unsigned int& nopt, const unsigned int& Iexch, double* e, double* e2,
-    double* e3, double* wang, double* wang2, double* wang3){
+    const unsigned int& nco, bool& OPEN, const unsigned int& nunp, 
+    const unsigned int& nopt, const unsigned int& Iexch, double* e, double* e2, 
+    double* e3, double* wang, double* wang2, double* wang3,
+    bool& use_libxc, const unsigned int& ex_functional_id, const unsigned int& ec_functional_id)
+{
   fortran_vars.atoms = natom;
   fortran_vars.max_atoms = max_atoms;
   fortran_vars.gaussians = ngaussians;
@@ -196,6 +201,13 @@ extern "C" void g2g_parameter_init_(
   fortran_vars.atom_atom_dists =
       HostMatrix<double>(fortran_vars.atoms, fortran_vars.atoms);
   fortran_vars.nearest_neighbor_dists = HostMatrix<double>(fortran_vars.atoms);
+
+  // Variables para configurar libxc
+#if USE_LIBXC
+    fortran_vars.use_libxc = use_libxc;
+    fortran_vars.ex_functional_id = ex_functional_id;
+    fortran_vars.ec_functional_id = ec_functional_id;
+#endif
 
 #if GPU_KERNELS
   G2G::gpu_set_variables();

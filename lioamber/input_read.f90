@@ -24,7 +24,9 @@ subroutine read_options(inputFile, charge)
                            sphere_radius, dipole, lowdin, mulliken,            &
                            print_coeffs, number_restr, Dbug, steep, Force_cut, &
                            Energy_cut, minimzation_steep, n_min_steeps,        &
-                           lineal_search, n_points, timers, IGRID, IGRID2
+                           lineal_search, n_points, timers, IGRID, IGRID2,     &
+                           use_libxc, ex_functional_id, ec_functional_id
+
     use field_data, only : field, a0, epsilon, Fx, Fy, Fz, field_iso_file,     &
                            field_aniso_file, nfields_iso, nfields_aniso
     use field_subs, only : read_fields
@@ -97,7 +99,10 @@ subroutine read_options(inputFile, charge)
                    dftb_calc, MTB, alfaTB, betaTB, gammaTB, Vbias_TB, end_bTB, &
                    start_tdtb, end_tdtb, TBsave, TBload,                       &
                    ! Variables for translation
-                   gaussian_convert
+                   gaussian_convert,                                           &
+                   ! Libxc variables
+                   use_libxc, ex_functional_id, ec_functional_id
+
     inquire(file = inputFile, exist = fileExists)
     if(fileExists) then
         open(unit = 100, file = inputFile, iostat = ios)
